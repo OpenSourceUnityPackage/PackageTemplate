@@ -1,36 +1,47 @@
-# Based on mob-sakai action
+# Based on mob-sakai and YarnSpinnerTool action
 # Secrets
 #   UNITY_LICENSE:
-name: Test package
+name: Run Tests 🧪
 
-on:
+on: 
   push:
-    branches:
-      - develop
-    tags:
-      - "!*"
+      branches:
+          - main
+          - develop
+          #- 'feature/**'
+      paths:
+        - 'Editor/**'
+        - 'Runtime/**'
+        - 'Samples~/**'
+        - 'Tests/**'
   pull_request:
     types:
       - opened
       - synchronize
+  workflow_dispatch:
 
 jobs:
-  unity-test:
+  buildAndTestForSomePlatforms:
+    name: Test on ${{ matrix.unityVersion }} for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        unityVersion: [
-            "2018.3.14f1",
-            "2018.4.30f1",
-            "2019.1.14f1",
-            "2019.2.21f1",
-            "2019.3.15f1",
-            "2019.4.16f1",
-            "2020.1.17f1",
-            "2020.2.1f1",
-          ]
-
+        unityVersion:
+          - 2018.4.30f1
+          - 2019.1.14f1
+          - 2019.2.21f1
+          - 2019.3.15f1
+          - 2019.4.16f1
+          - 2020.1.17f1
+          - 2020.2.1f1
+        targetPlatform:
+          # - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          # - StandaloneLinux64 # Build a Linux 64-bit standalone.
+          # - iOS # Build an iOS player.
+          # - Android # Build an Android player.
+          # - WebGL # WebGL.
     steps:
       # Checkout sandbox project
       - uses: actions/checkout@v2
@@ -43,7 +54,8 @@ jobs:
       - name: "Update package submodule"
         working-directory: Packages/dev
         run: git checkout ${{ github.sha }}
-
+            
+      # ???
       - uses: actions/cache@v2
         with:
           path: Library
@@ -51,11 +63,7 @@ jobs:
           restore-keys: |
             Library-${{ matrix.unityVersion }}-
             Library-
-      # Install codecoverage package
-      - name: "Install codecoverage package"
-        if: startsWith(matrix.unityVersion, '2019.4.')
-        run: |
-          npx openupm-cli add -f com.unity.testtools.codecoverage@0.4.0-preview
+            
       # Run tests
       - name: "Run tests"
         uses: game-ci/unity-test-runner@main
@@ -66,29 +74,11 @@ jobs:
           customParameters: -nographics -enableCodeCoverage -coverageOptions assemblyFilters:+TODO_COMPAGNIE_NAME.TODO_PACKAGENAME.*Tests
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-
-      - uses: actions/upload-artifact@v2
+      
+      # Upload test results
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: TestResults-${{ matrix.unityVersion }}
-          path: |
-            artifacts/*.xml
-            CodeCoverage/**/TestCoverageResults_*.xml
-  publish:
-    needs: unity-test
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      
-      - uses: actions/download-artifact@v2
-        with:
-          path: artifacts
-      
-      - uses: testspace-com/setup-testspace@v1
-        with:
-          domain: ${{github.repository_owner}}
-
-      - name: Push test results
-        if: always()
-        run: |
-          testspace `find . -name '*.xml' | tr '\n' ' '`
+          name: Test results (edit + play, ${{ matrix.unityVersion }}-${{ matrix.targetPlatform }}
+          path: ${{ steps.testRunner.outputs.artifactsPath }}
