@@ -1,22 +1,21 @@
 {
-  "name": "com.open-source-unity-package.TODO-NAME",
-  "displayName": "TODO NAME",
+  "name": "[YourCompany].[YourPackageName]",
+  "displayName": "[YourPackageDisplayName]",
   "description": "",
-  "version": "1.0.3",
+  "version": "0.0.0",
   "unity": "2020.3",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://TODO-GIT-HTTPS.git"
+    "url": "git+[YourHTTPSGit]"
   },
   "author": {
-    "name": "TODO-AUTHOR",
+    "name": "[YourAuthorName]",
     "url": ""
   },
   "dependencies": {},
   "keywords": [
-    "TODO-KEYWORDS-0",
-    "TODO-KEYWORDS-X"
+    ""
   ],
   "samples": [
     {
