@@ -1,0 +1,61 @@
+name: Setup package 📝
+on:
+  workflow_dispatch:
+
+jobs:
+  Setup:
+    runs-on: ubuntu-latest
+    
+    env:
+      # This need to respect the Unity nomenclature (see : https://docs.unity3d.com/Manual/cus-naming.html)
+      # Previous name (back slash to include special character):
+      PrevCompanyNameField: \[YourCompany\]
+      PrevPackageNameField: \[YourPackageName\]
+      # Your current settings :
+      CompanyNameField: open-source-unity-package
+      PackageNameField: package-name
+    
+    steps:
+      ###########################
+      #         Checkout        #
+      ###########################
+    - name: Checkout project
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+      
+      ##########################
+      #     Replace field      #
+      ##########################
+    - name: Replace name
+      run: |
+        echo ""
+        echo "#########################"
+        echo "#    Replace field     #"
+        echo "#########################"
+        echo ""
+        find . -type f -name "*" ! -path "./.github/*" ! -path "./.git/*" ! -name ".gitignore" | while read FILE ; do
+          sed -i -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$PackageNameField/" ${FILE}
+          newfile="$(echo ${FILE} |sed -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$PackageNameField/")" ;
+          if [ "${FILE}" != "${newfile}" ]; then
+              echo "Rename ${FILE} to ${newfile}"
+              mv "${FILE}" "${newfile}" ;
+          fi
+        done
+        
+      ###########################
+      #         Commit          #
+      ###########################
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "Add changes" -a
+        
+      #########################
+      #         Push          #
+      #########################
+    - name: Push changes
+      uses: ad-m/github-push-action@a3fd843e49cd58d296bdd2431c4853569a1b900f #Use specific commit for stability
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
