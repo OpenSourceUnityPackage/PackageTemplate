@@ -23,6 +23,10 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
+**Unity (please complete the following information):**
+- Version:  [e.g. 2020.3.29f1]
+- TestMode: [e.g. Editor, playmode]
+
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
  - Browser [e.g. chrome, safari]
