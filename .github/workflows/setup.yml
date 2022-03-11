@@ -42,6 +42,11 @@ jobs:
               mv "${FILE}" "${newfile}" ;
           fi
         done
+        find . -type f -name "package.json" | while read FILE ; do
+            repoURL="${{ github.server_url }}/${{ github.repository }}.git";
+            echo "Add repository URL: ${repoURL}"
+            sed -i -e "s/\[YourHTTPSGit\]/${repoURL}/" ${FILE}
+        done
         
       ###########################
       #         Commit          #
