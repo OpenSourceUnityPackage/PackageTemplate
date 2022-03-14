@@ -13,11 +13,12 @@ jobs:
       PrevCompanyNameField: \[YourCompany\]
       PrevPackageNameField: \[YourPackageName\]
       PrevGitURLField: \[YourHTTPSGit\]
+      PrevPackageDisplayNameField: \[YourPackageDisplayName\]
       # Your current settings :
       AuthorNameField: ${{github.repository_owner}}
       CompanyNameField: open-source-unity-package
-      PackageNameField: package-name
-      GitURLField: ${{ github.server_url }}/${{ github.repository }}.git
+      PackageNameField: ${{github.event.repository.name}}
+      GitURLField: ${{github.server_url}}/${{github.repository}}.git
     
     steps:
       ###########################
@@ -30,7 +31,7 @@ jobs:
       
       ##########################
       #     Replace field      #
-      ##########################
+      ##########################      
     - name: Replace name
       run: |
         echo ""
@@ -38,23 +39,27 @@ jobs:
         echo "#    Replace field     #"
         echo "#########################"
         echo ""
+        echo ""
+        
+        LowercaseProjectName="$(echo $PackageNameField | tr '[A-Z]' '[a-z]')"
+        
         find . -type f -name "*" ! -path "./.github/*" ! -path "./.git/*" ! -name ".gitignore" | while read FILE ; do
-          sed -i -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$PackageNameField/" ${FILE}
-          newfile="$(echo ${FILE} |sed -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$PackageNameField/")";
+          sed -i -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$LowercaseProjectName/" ${FILE}
+          newfile="$(echo ${FILE} |sed -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$LowercaseProjectName/")";
           if [ "${FILE}" != "${newfile}" ]; then
               echo "Rename ${FILE} to ${newfile}"
               mv "${FILE}" "${newfile}" ;
           fi
         done
         
-        echo "Set project display name: $PackageDisplayNameField"
-        sed -i "s/$PrevPackageDisplayNameField/$PackageDisplayNameField/" package.json
+        echo "Set project display name: $PackageNameField"
+        sed -i "s|$PrevPackageDisplayNameField|$PackageNameField|" package.json
         
         echo "Set author : $AuthorNameField"
-        sed -i "s/$PrevAuthorNameField/$AuthorNameField/" package.json
+        sed -i "s|$PrevAuthorNameField|$AuthorNameField|" package.json
         
         echo "Add repository URL: $GitURLField"
-        sed -i "s|${PrevGitURLField}|${GitURLField}|" package.json
+        sed -i "s|$PrevGitURLField|$GitURLField|" package.json
         
       ###########################
       #         Commit          #
