@@ -1,6 +1,7 @@
 name: Setup package 📝
 on:
   workflow_dispatch:
+  create:
 
 jobs:
   Setup:
