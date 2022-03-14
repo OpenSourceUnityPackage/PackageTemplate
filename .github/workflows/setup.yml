@@ -42,7 +42,7 @@ jobs:
         echo ""
         echo ""
         
-        LowercaseProjectName="$(echo $PackageNameField | tr '[A-Z]' '[a-z]')"
+        LowercaseProjectName="$(echo $PackageNameField | sed 's/[A-Z]/-&/g;s/^-//' | tr '[A-Z]' '[a-z]')"
         
         find . -type f -name "*" ! -path "./.github/*" ! -path "./.git/*" ! -name ".gitignore" | while read FILE ; do
           sed -i -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$LowercaseProjectName/" ${FILE}
