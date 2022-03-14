@@ -12,10 +12,12 @@ jobs:
       PrevAuthorNameField: \[YourAuthorName\]
       PrevCompanyNameField: \[YourCompany\]
       PrevPackageNameField: \[YourPackageName\]
+      PrevGitURLField: \[YourHTTPSGit\]
       # Your current settings :
       AuthorNameField: ${{github.repository_owner}}
       CompanyNameField: open-source-unity-package
       PackageNameField: package-name
+      GitURLField: ${{ github.server_url }}/${{ github.repository }}.git
     
     steps:
       ###########################
@@ -49,9 +51,8 @@ jobs:
             echo "Set author : $AuthorNameField"
             sed -i -e "s/$PrevAuthorNameField/$AuthorNameField/" ${FILE}
             
-            repoURL="${{ github.server_url }}/${{ github.repository }}.git";
-            echo "Add repository URL: ${repoURL}"
-            sed -i -e "s/\[YourHTTPSGit\]/${repoURL}/" ${FILE}
+            echo "Add repository URL: $GitURLField"
+            sed -i -e "s/$PrevGitURLField/$GitURLField/" ${FILE}
         done
         
       ###########################
