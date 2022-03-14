@@ -9,9 +9,11 @@ jobs:
     env:
       # This need to respect the Unity nomenclature (see : https://docs.unity3d.com/Manual/cus-naming.html)
       # Previous name (back slash to include special character):
+      PrevAuthorNameField: \[YourAuthorName\]
       PrevCompanyNameField: \[YourCompany\]
       PrevPackageNameField: \[YourPackageName\]
       # Your current settings :
+      AuthorNameField: ${github.repository_owner}
       CompanyNameField: open-source-unity-package
       PackageNameField: package-name
     
@@ -36,13 +38,17 @@ jobs:
         echo ""
         find . -type f -name "*" ! -path "./.github/*" ! -path "./.git/*" ! -name ".gitignore" | while read FILE ; do
           sed -i -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$PackageNameField/" ${FILE}
-          newfile="$(echo ${FILE} |sed -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$PackageNameField/")" ;
+          newfile="$(echo ${FILE} |sed -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$PackageNameField/")";
           if [ "${FILE}" != "${newfile}" ]; then
               echo "Rename ${FILE} to ${newfile}"
               mv "${FILE}" "${newfile}" ;
           fi
         done
+        
         find . -type f -name "package.json" | while read FILE ; do
+            echo "Set author : $AuthorNameField"
+            sed -i -e "s/$PrevAuthorNameField/$AuthorNameField/" ${FILE}
+            
             repoURL="${{ github.server_url }}/${{ github.repository }}.git";
             echo "Add repository URL: ${repoURL}"
             sed -i -e "s/\[YourHTTPSGit\]/${repoURL}/" ${FILE}
