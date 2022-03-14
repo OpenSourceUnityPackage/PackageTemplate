@@ -52,7 +52,7 @@ jobs:
             sed -i -e "s/$PrevAuthorNameField/$AuthorNameField/" ${FILE}
             
             echo "Add repository URL: $GitURLField"
-            sed -i -e "s/$PrevGitURLField/$GitURLField/" ${FILE}
+            sed -i -e 's/$PrevGitURLField/$GitURLField/' ${FILE}
         done
         
       ###########################
