@@ -13,7 +13,7 @@ jobs:
       PrevCompanyNameField: \[YourCompany\]
       PrevPackageNameField: \[YourPackageName\]
       # Your current settings :
-      AuthorNameField: ${github.repository_owner}
+      AuthorNameField: ${{github.repository_owner}}
       CompanyNameField: open-source-unity-package
       PackageNameField: package-name
     
