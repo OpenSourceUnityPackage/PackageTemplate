@@ -1,16 +1,16 @@
 {
-  "name": "open-source-unity-package.package-template",
-  "displayName": "PackageTemplate",
+  "name": "[YourCompany].[YourPackageName]",
+  "displayName": "[YourPackageDisplayName]",
   "description": "",
   "version": "0.0.0",
   "unity": "2020.3",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OpenSourceUnityPackage/PackageTemplate.git"
+    "url": "git+[YourHTTPSGit]"
   },
   "author": {
-    "name": "OpenSourceUnityPackage",
+    "name": "[YourAuthorName]",
     "url": ""
   },
   "dependencies": {},

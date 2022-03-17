@@ -1,7 +1,7 @@
 {
-  "name": "open-source-unity-package.package-template.Tests",
+  "name": "[YourCompany].[YourPackageName].Tests",
   "references": [
-    "open-source-unity-package.package-template.Runtime"
+    "[YourCompany].[YourPackageName].Runtime"
   ],
   "optionalUnityReferences": [
     "TestAssemblies"
