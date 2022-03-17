@@ -67,7 +67,7 @@ jobs:
       ################################
       #     Remove setup action      #
       ################################      
-    - name: Replace name
+    - name: Remove setup action
       run: |
         rm .github/workflows/setup.yml
       
