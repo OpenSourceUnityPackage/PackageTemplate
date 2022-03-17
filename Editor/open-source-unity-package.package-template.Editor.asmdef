@@ -1,0 +1,10 @@
+{
+	"name": "open-source-unity-package.package-template.Editor",
+	"references": [
+		"open-source-unity-package.package-template.Runtime"
+	],
+	"includePlatforms": [
+		"Editor"
+	],
+	"excludePlatforms": []
+}

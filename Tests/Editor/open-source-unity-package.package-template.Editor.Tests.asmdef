@@ -1,0 +1,12 @@
+{
+  "name": "open-source-unity-package.package-template.Editor.Tests",
+  "references": [
+    "open-source-unity-package.package-template.Editor",
+    "open-source-unity-package.package-template.Runtime"
+  ],
+  "optionalUnityReferences": [
+    "TestAssemblies"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": []
+}
