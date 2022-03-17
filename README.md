@@ -1,4 +1,24 @@
-# Package template
+<h1 align="center" style="border-bottom: none;">Unity package template📦 </h1>
+<h3 align="center">Fully automated version management and package publishing</h3>
+<p align="center">
+  <a href="https://github.com/semantic-release/semantic-release/actions?query=workflow%3ATest+branch%3Amaster">
+    <img alt="Build states" src="https://github.com/semantic-release/semantic-release/workflows/Test/badge.svg">
+  </a>
+  <a href="https://github.com/semantic-release/semantic-release/actions?query=workflow%3ATest+branch%3Amaster">
+    <img alt="semantic-release: angular" src="https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release">
+  </a>
+  <a href="LICENSE">
+    <img alt="License" src="https://img.shields.io/badge/License-MIT-blue.svg">
+  </a>
+</p>
+<p align="center">
+  <a href="package.json">
+    <img alt="Version" src="https://img.shields.io/github/package-json/v/OpenSourceUnityPackage/PackageTemplate">
+  </a>
+  <a href="#LastActivity">
+    <img alt="LastActivity" src="https://img.shields.io/github/last-commit/OpenSourceUnityPackage/PackageTemplate">
+  </a>
+</p>
 
 ## What is it ?
 Package template is a template repository to create quickly package for unity.
