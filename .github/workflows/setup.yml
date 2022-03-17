@@ -1,8 +1,10 @@
 name: Setup package 📝
 on:
   workflow_dispatch:
-  create:
-
+  push:
+    branches:
+    - main
+    
 jobs:
   Setup:
     runs-on: ubuntu-latest
@@ -61,7 +63,14 @@ jobs:
         
         echo "Add repository URL: $GitURLField"
         sed -i "s|$PrevGitURLField|$GitURLField|" package.json
-        
+      
+      ################################
+      #     Remove setup action      #
+      ################################      
+    - name: Replace name
+      run: |
+        rm .github/workflows/setup.yml
+      
       ###########################
       #         Commit          #
       ###########################
