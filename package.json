@@ -24,11 +24,10 @@
         "path": "Samples~/Demo"
     }
   ],
-    "release": {
+  "release": {
     "branches": [
       "master",
       "main",
-      "develop"
       {
         "name": "preview",
         "prerelease": true
@@ -48,4 +47,5 @@
       "@semantic-release/git",
       "@semantic-release/github"
     ]
+  }
 }
