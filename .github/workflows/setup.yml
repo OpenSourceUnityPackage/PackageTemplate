@@ -19,7 +19,6 @@ jobs:
       PrevPackageDisplayNameField: \[YourPackageDisplayName\]
       # Your current settings :
       AuthorNameField: ${{github.repository_owner}}
-      CompanyNameField: open-source-unity-package
       PackageNameField: ${{github.event.repository.name}}
       GitURLField: ${{github.server_url}}/${{github.repository}}.git
     
@@ -45,10 +44,11 @@ jobs:
         echo ""
         
         LowercaseProjectName="$(echo $PackageNameField | sed 's/[A-Z]/-&/g;s/^-//' | tr '[A-Z]' '[a-z]')"
+        LowercaseCompanyNameField="$(echo $AuthorNameField | sed 's/[A-Z]/-&/g;s/^-//' | tr '[A-Z]' '[a-z]')"
         
         find . -type f -name "*" ! -path "./.github/*" ! -path "./.git/*" ! -name ".gitignore" | while read FILE ; do
-          sed -i -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$LowercaseProjectName/" ${FILE}
-          newfile="$(echo ${FILE} |sed -e "s/$PrevCompanyNameField/$CompanyNameField/" -e "s/$PrevPackageNameField/$LowercaseProjectName/")";
+          sed -i -e "s/$PrevCompanyNameField/$LowercaseCompanyNameField/" -e "s/$PrevPackageNameField/$LowercaseProjectName/" ${FILE}
+          newfile="$(echo ${FILE} |sed -e "s/$PrevCompanyNameField/$LowercaseCompanyNameField/" -e "s/$PrevPackageNameField/$LowercaseProjectName/")";
           if [ "${FILE}" != "${newfile}" ]; then
               echo "Rename ${FILE} to ${newfile}"
               mv "${FILE}" "${newfile}" ;
@@ -63,7 +63,10 @@ jobs:
         
         echo "Add repository URL: $GitURLField"
         sed -i "s|$PrevGitURLField|$GitURLField|" package.json
-      
+        
+        echo "Replace badge in reamde"
+        sed -i -e "s/OpenSourceUnityPackage/$AuthorNameField/" -e "s/PackageTemplate/$PackageNameField/" README.md
+        
       ################################
       #     Remove setup action      #
       ################################      
