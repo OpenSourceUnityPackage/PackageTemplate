@@ -60,7 +60,11 @@ jobs:
         
         echo "Set author : $AuthorNameField"
         sed -i "s|$PrevAuthorNameField|$AuthorNameField|" package.json
-        
+
+        if [ "$AuthorNameField" == "OpenSourceUnityPackage" ]; then
+            sed -i "s|    \"url\"\: \"\"|    \"url\"\: \"https:\/\/github.com\/OpenSourceUnityPackage\"|" package.json;
+        fi
+
         echo "Add repository URL: $GitURLField"
         sed -i "s|$PrevGitURLField|$GitURLField|" package.json
         
