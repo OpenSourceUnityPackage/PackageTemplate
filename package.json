@@ -19,9 +19,9 @@
   ],
   "samples": [
     {
-        "displayName": "Demo",
-        "description": "Demo",
-        "path": "Samples~/Demo"
+      "displayName": "Demo",
+      "description": "Demo",
+      "path": "Samples~/Demo"
     }
   ],
   "release": {
