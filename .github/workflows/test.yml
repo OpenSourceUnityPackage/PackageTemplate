@@ -64,6 +64,27 @@ jobs:
             Library-${{ matrix.unityVersion }}-
             Library-
             
+      ################################
+      #     Check sample folder      #
+      ################################      
+      - name: Check sample folder
+        run: |
+          echo ""
+          echo "##############################"
+          echo "#    Check sample folder     #"
+          echo "##############################"
+          echo ""
+          echo ""
+          if exist Sample.meta then
+             echo "Sample.meta exist and pollut your environement"
+             exit 1
+          fi
+
+          if exist ./Sample/ then
+             echo "Sample.meta exist and pollut your environement"
+             exit 1
+          fi
+            
       # Run tests
       - name: "Run tests"
         uses: game-ci/unity-test-runner@main
