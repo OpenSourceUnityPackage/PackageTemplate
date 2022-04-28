@@ -56,34 +56,33 @@ Well done ! Your package is now available. You can now develop it. Don't forgot 
   │       │             │
   │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
   │       │
-  │       └─⫸ Commit Scope: animations|bazel|benchpress|common|compiler|compiler-cli|core|
-  │                          elements|forms|http|language-service|localize|platform-browser|
-  │                          platform-browser-dynamic|platform-server|router|service-worker|
-  │                          upgrade|zone.js|packaging|changelog|docs-infra|migrations|ngcc|ve|
-  │                          devtools
+  │       └─⫸ Commit Scope: could be anything specifying title of the commit change in change log
   │
-  └─⫸ Commit Type: build|ci|docs|feat|fix|perf|refactor|test
+  └─⫸ Commit Type: feat, fix or perf, it will appear in the changelog.
+              Build, ci, docs, style, refactor and test for non-changelog related tasks
 ```
 
 The `<type>` and `<summary>` fields are mandatory, the `(<scope>)` field is optional.
 
 
-##### Type
+### Type
 
 Must be one of the following:
+* Visible in changelog: 
+  * **feat**: A new feature
+  * **fix**: A bug fix
+  * **perf**: A code change that improves performance
 
-* **build**: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
-* **ci**: Changes to our CI configuration files and scripts (examples: CircleCi, SauceLabs)
-* **docs**: Documentation only changes
-* **feat**: A new feature
-* **fix**: A bug fix
-* **perf**: A code change that improves performance
-* **refactor**: A code change that neither fixes a bug nor adds a feature
-* **test**: Adding missing tests or correcting existing tests
+* Non-changelog related tasks
+  * **build**: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+  * **ci**: Changes to our CI configuration files and scripts (examples: CircleCi, SauceLabs)
+  * **docs**: Documentation only changes
+  * **refactor**: A code change that neither fixes a bug nor adds a feature
+  * **test**: Adding missing tests or correcting existing tests
   
 For example:
-  - feat: create new feature
-  - fix: fix an error
+  - feat(FeatureName): create new feature
+  - fix(Medium): fix an error
   - docs: update readme
 
-For more information [see](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format)
+For more information [see](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-format) and for resume [see](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular)
