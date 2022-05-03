@@ -1,6 +1,3 @@
-# Based on mob-sakai and YarnSpinnerTool action
-# Secrets
-#   UNITY_LICENSE:
 name: Run Tests 🧪
 
 on: 
@@ -9,11 +6,6 @@ on:
           - main
           - develop
           #- 'feature/**'
-      paths:
-        - 'Editor/**'
-        - 'Runtime/**'
-        - 'Samples~/**'
-        - 'Tests/**'
   pull_request:
     types:
       - opened
@@ -22,7 +14,7 @@ on:
 
 jobs:
   buildAndTestForSomePlatforms:
-    name: Test on ${{ matrix.unityVersion }} for ${{ matrix.targetPlatform }}
+    name: Test Unity version ${{ matrix.unityVersion }} | Platform ${{ matrix.targetPlatform }} | Test mode ${{ matrix.testMode }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
