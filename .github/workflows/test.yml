@@ -27,14 +27,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        testMode:
+          - playmode
+          - editmode
         unityVersion:
-          - 2018.4.30f1
-          - 2019.1.14f1
-          - 2019.2.21f1
-          - 2019.3.15f1
-          - 2019.4.16f1
-          - 2020.1.17f1
-          - 2020.2.1f1
+          # Main LTS version : https://unity3d.com/unity/qa/lts-releases
+          - 2019.4.38f1
+          - 2020.3.33f1
+          - 2021.3.1f1
         targetPlatform:
           # - StandaloneOSX # Build a macOS standalone (Intel 64-bit).
           - StandaloneWindows64 # Build a Windows 64-bit standalone.
@@ -42,27 +42,30 @@ jobs:
           # - iOS # Build an iOS player.
           # - Android # Build an Android player.
           # - WebGL # WebGL.
+        projectPath:
+          - ./package/${{ github.repository }}
+          
     steps:
       # Checkout sandbox project
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          ref: sandbox
-          submodules: true
-          fetch-depth: 0
-
-      # Update package submodule
-      - name: "Update package submodule"
-        working-directory: Packages/dev
-        run: git checkout ${{ github.sha }}
-            
-      # ???
-      - uses: actions/cache@v2
+          lfs: true
+          
+      # Caching dependencies and build outputs to improve workflow execution time
+      - uses: actions/cache@v3
         with:
-          path: Library
-          key: Library-${{ matrix.unityVersion }}-${{ github.sha }}
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}
           restore-keys: |
-            Library-${{ matrix.unityVersion }}-
             Library-
+     
+      - name: copy dir to new dir
+        run: |
+          pwd
+          folderName=$(echo "${PWD##*/}")
+          rsync -r "$GITHUB_WORKSPACE" "package" 
+          ls -F "package/$folderName"
             
       ################################
       #     Check sample folder      #
@@ -89,17 +92,21 @@ jobs:
       - name: "Run tests"
         uses: game-ci/unity-test-runner@main
         with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
           unityVersion: ${{ matrix.unityVersion }}
-          # List of parameters here : https://docs.unity3d.com/Manual/CommandLineArguments.html
-          # assemblyFilters: https://docs.unity3d.com/Packages/com.unity.testtools.codecoverage@0.2/manual/UsingCodeCoverage.html
-          customParameters: -nographics -enableCodeCoverage -coverageOptions assemblyFilters:+TODO_COMPAGNIE_NAME.TODO_PACKAGENAME.*Tests
+          projectPath: ${{ matrix.projectPath }}
+          testMode: ${{ matrix.testMode }}
+          packageMode: true
+           # List of parameters here : https://docs.unity3d.com/Manual/CommandLineArguments.html
+          customParameters: -nographics assemblyFilters:+[YourCompany].[YourPackageName].*,-*Tests*
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport'
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-      
-      # Upload test results
-      - name: Upload test results
-        uses: actions/upload-artifact@v2
-        if: always()
+          
+      # Upload coverage
+      - name: Upload coverage results
+        uses: actions/upload-artifact@v3
         with:
-          name: Test results (edit + play, ${{ matrix.unityVersion }}-${{ matrix.targetPlatform }}
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
+          name: Package Coverage results (edit + play, ${{ matrix.unityVersion }}-${{ matrix.targetPlatform }}-${{ matrix.testMode }}
+          path: ${{ steps.testRunner.outputs.coveragePath }}
+          retention-days: 1
