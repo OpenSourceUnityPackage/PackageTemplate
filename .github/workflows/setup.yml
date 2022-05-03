@@ -46,7 +46,7 @@ jobs:
         LowercaseProjectName="$(echo $PackageNameField | sed 's/[A-Z]/-&/g;s/^-//' | tr '[A-Z]' '[a-z]')"
         LowercaseCompanyNameField="$(echo $AuthorNameField | sed 's/[A-Z]/-&/g;s/^-//' | tr '[A-Z]' '[a-z]')"
         
-        find . -type f -name "*" ! -path "./.github/*" ! -path "./.git/*" ! -name ".gitignore" | while read FILE ; do
+        find . -type f -name "*" ! -path "./.git/*" ! -name ".gitignore" | while read FILE ; do
           sed -i -e "s/$PrevCompanyNameField/$LowercaseCompanyNameField/" -e "s/$PrevPackageNameField/$LowercaseProjectName/" ${FILE}
           newfile="$(echo ${FILE} |sed -e "s/$PrevCompanyNameField/$LowercaseCompanyNameField/" -e "s/$PrevPackageNameField/$LowercaseProjectName/")";
           if [ "${FILE}" != "${newfile}" ]; then
