@@ -1,5 +1,5 @@
 {
-  "name": "[YourCompany].[YourPackageName].Tests",
+  "name": "[YourCompany].[YourPackageName].Runtime.Tests",
   "references": [
     "[YourCompany].[YourPackageName].Runtime"
   ],
