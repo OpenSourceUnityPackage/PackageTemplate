@@ -70,12 +70,14 @@ jobs:
           echo "##############################"
           echo ""
           echo ""
-          if exist Sample.meta then
+          if exist Sample.meta;
+          then
              echo "Sample.meta exist and pollut your environement"
              exit 1
           fi
 
-          if exist ./Sample/ then
+          if exist ./Sample/;
+          then
              echo "Sample.meta exist and pollut your environement"
              exit 1
           fi
