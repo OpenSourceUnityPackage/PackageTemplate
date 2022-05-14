@@ -1,5 +1,5 @@
 {
-  "name": "[YourCompany].[YourPackageName]",
+  "name": "com.[YourCompany].[YourPackageName]",
   "displayName": "[YourPackageDisplayName]",
   "description": "",
   "version": "0.0.0",
