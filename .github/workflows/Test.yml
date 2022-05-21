@@ -44,43 +44,38 @@ jobs:
         with:
           lfs: true
           
-      # Caching dependencies and build outputs to improve workflow execution time
+      # Caching dependencies and build outputs to improve workflow execution time           
       - uses: actions/cache@v3
         with:
           path: ${{ matrix.projectPath }}/Library
           key: Library-${{ matrix.projectPath }}
           restore-keys: |
             Library-
-     
-      - name: copy dir to new dir
+
+      # Fix bug with test runner that canno't access to license if project is not into a directory    
+      - name: copy project into new directory
         run: |
           pwd
           folderName=$(echo "${PWD##*/}")
           rsync -r "$GITHUB_WORKSPACE" "package" 
           ls -F "package/$folderName"
-            
-      ################################
-      #     Check sample folder      #
-      ################################      
+      
+      # Fail if sample is not call sample~ or sample.meta is found
       - name: Check sample folder
         run: |
-          echo ""
-          echo "##############################"
-          echo "#    Check sample folder     #"
-          echo "##############################"
-          echo ""
-          echo ""
-          if exist Sample.meta;
+          if [ -f ${{ matrix.projectPath }}/Sample.meta ];
           then
-             echo "Sample.meta exist and pollut your environement"
+             echo "Sample.meta exist. Please remove it from your project"
              exit 1
           fi
-
-          if exist ./Sample/;
+          
+          if [ -d ${{ matrix.projectPath }}/Sample/ ];
           then
-             echo "Sample.meta exist and pollut your environement"
+             echo "Sample.meta exist. Please ensure this folder is hiding for unity renaming it Sample~. Also ensure that meta Sample.meta doesn't exist"
              exit 1
           fi
+          
+          echo "Sample folder ok"
             
       # Run tests
       - name: "Run tests"
