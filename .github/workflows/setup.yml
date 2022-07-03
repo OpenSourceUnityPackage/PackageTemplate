@@ -7,6 +7,8 @@ on:
     
 jobs:
   Setup:
+    # Prevent running on base template
+    if: github.repository != 'OpenSourceUnityPackage/PackageTemplate'
     runs-on: ubuntu-latest
     
     env:
