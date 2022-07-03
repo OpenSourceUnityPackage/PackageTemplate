@@ -14,6 +14,8 @@ on:
 
 jobs:
   buildAndTestForSomePlatforms:
+    # Prevent running on base template
+    if: github.repository != 'OpenSourceUnityPackage/PackageTemplate'
     name: Test Unity version ${{ matrix.unityVersion }} | Platform ${{ matrix.targetPlatform }} | Test mode ${{ matrix.testMode }}
     runs-on: ubuntu-latest
     strategy:
